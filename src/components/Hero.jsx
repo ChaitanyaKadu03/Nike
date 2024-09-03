@@ -1,12 +1,27 @@
 import Button from './sub-components/Button';
 import { shoes, statistics } from '../constants/constants';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { memo } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { divPosition } from '../store/atoms';
 
-const Hero = () => {
+const Hero = ({ id }) => {
+  const setPosition = useSetRecoilState(divPosition(id));
+  const theDivPosition = useRef();
+
+  useEffect(() => {
+    setPosition({
+      top:  theDivPosition.current.getBoundingClientRect().top + window.scrollY
+    });
+ 
+  }, []);
+
   return (
-    <div className="max-mobile:relative flex flex-row justify-between heroSection:pl-16 max-heroSection:py-8 cursor-context-menu max-w-[1440px] max-heroSection:flex-col max-heroSection:w-full max-heroSection:items-center max-heroSection:text-center mx-auto ">
+    <div
+      ref={theDivPosition}
+      className="max-mobile:relative flex flex-row justify-between heroSection:pl-16 max-heroSection:py-8 cursor-context-menu max-w-[1440px] max-heroSection:flex-col max-heroSection:w-full max-heroSection:items-center max-heroSection:text-center mx-auto "
+    >
       <div className="flex flex-col gap-8 z-10 max-heroSection:items-center max-heroSection:pb-12 max-mobile:gap-6 max-tab:px-8 max-mobile:px-4 max-tab:w-full max-mobile:w-full">
         <p className="text-coral-red text-xl max-mobile:text-lg">
           Our Summer collections
@@ -33,21 +48,21 @@ const Hero = () => {
 };
 
 const StatisticsCard = memo(({ res }) => {
-  const [count, setcount] = useState(res.value - 4);
-  const [maxCount, setmaxCount] = useState(res.value);
+  // const [count, setcount] = useState(res.value - 4);
+  // const [maxCount, setmaxCount] = useState(res.value);
 
-  useEffect(() => {
-    if (count < maxCount) {
-      const timer = setTimeout(() => setcount(count + 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [count, maxCount]);
+  // useEffect(() => {
+  //   if (count < maxCount) {
+  //     const timer = setTimeout(() => setcount(count + 1), 1000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [count, maxCount]);
 
   return (
     <ul className="flex flex-col w-[120px] max-mobile:w-[80px]">
       <li className="text-4xl font-medium max-mobile:text-2xl">
-        {count}
-        {count == maxCount ? res.suffix : null}
+        {res.value}
+        {res.suffix}
       </li>
       <li className="text-slate-500 max-mobile:text-sm">{res.label}</li>
     </ul>

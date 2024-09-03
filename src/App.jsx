@@ -12,13 +12,13 @@ export default function App() {
   return (
     <div className="font-montserrat">
       <Nav />
-      <Hero />
-      <Products />
-      <Quality />
+      <Hero id={1} />
+      <Products id={3} />
+      <Quality id={2} />
       <Features />
       <Offers />
       <Testimonials />
-      <Updates />
+      <Updates id={4} />
       <Footer />
     </div>
   );

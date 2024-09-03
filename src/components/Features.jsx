@@ -3,7 +3,7 @@ import { services } from '../constants/constants';
 const Features = () => {
   return (
     <div className="tab:flex gap-8 justify-between padding max-heroSection:px-8 max-heroSection:gap-8 
-    max-tab:gap-y-[32px] max-tab:row-h-12 max-tab:grid-cols-2 max-tab:grid max-mobile:flex max-mobile:flex-col max-mobile:px-4 max-mobile:items-center">
+    max-tab:gap-y-[32px] max-tab:row-h-12 max-tab:grid-cols-2 max-tab:grid max-mobile:flex max-mobile:flex-col max-mobile:px-4 max-mobile:items-center max-w-[1440px] mx-auto">
       {services.map((data) => {
         return (
           <div

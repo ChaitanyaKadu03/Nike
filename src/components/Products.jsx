@@ -1,18 +1,29 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { products } from '../constants/constants';
 import Button from './sub-components/Button';
 import ShoeCard from './sub-components/ShoeCard';
+import { useSetRecoilState } from 'recoil';
+import { divPosition } from '../store/atoms';
 
-const Products = () => {
-  let productsDiv = useRef();
+const Products = ({ id }) => {
+  const setPosition = useSetRecoilState(divPosition(id));
+  const theDivPosition = useRef();
+
+  useEffect(() => {
+    setPosition({
+      top:  theDivPosition.current.getBoundingClientRect().top + window.scrollY
+    });
+     ;
+  }, []);
+
   const [showlAll, setshowlAll] = useState(() => {
     return window.innerWidth < 640 ? false : true;
   });
 
   return (
     <div
+      ref={theDivPosition}
       className="padding flex flex-col gap-16 w-full max-w-[1440px] mx-auto max-heroSection:px-8 max-tab:gap-12 max-tab:py-12 max-mobile:px-4"
-      ref={productsDiv}
     >
       <div className="flex flex-col gap-4 w-[720px] max-tab:text-center max-tab:items-center max-tab:my-auto max-tab:w-full">
         <h1 className="heading1">

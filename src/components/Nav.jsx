@@ -1,11 +1,24 @@
 import { headerLogo } from '../assets/images/index';
-import { hamburger } from '../assets/icons/index';
+import { hamburger, cross } from '../assets/icons/index';
 import { navLinks } from '../constants/constants';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { divPosition } from '../store/atoms';
+import { useRecoilValue } from 'recoil';
 
 const Nav = () => {
-  const hamburgerBtn = useRef();
   const [hamClick, setHamClick] = useState(false);
+  const hamBtn = useRef();
+
+  const position = navLinks.map((res) => {
+    return useRecoilValue(divPosition(res.id));
+  }, {});
+
+  const scrolltodiv = ({ id, subsTop }) => {
+    window.scrollTo({
+      top: position[id - 1].top - subsTop,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div className="h-fit w-full sticky top-0 z-50 ">
@@ -19,6 +32,9 @@ const Nav = () => {
               <li
                 key={res.label}
                 className="cursor-pointer w-fit px-2 font-medium text-slate-500 hover:text-slate-700 text-lg"
+                onClick={() => {
+                  scrolltodiv({ id: res.id, subsTop: res.subsTop });
+                }}
               >
                 <a href={res.href}>{res.label}</a>
               </li>
@@ -32,18 +48,19 @@ const Nav = () => {
           Sign in /Explore Now
         </a>
         <img
-          src={hamburger}
+          src={hamClick ? cross : hamburger}
           alt="icon"
           height="24px"
           width="24px"
-          className="lg:hidden cursor-pointer"
+          className="lg:hidden cursor-pointer max-mobile:h-8 max-mobile:w-8"
           onClick={() => {
             setHamClick((res) => !res);
           }}
+          ref={hamBtn}
         />
       </div>
       <ul
-        className={`mobile:hidden fixed  bg-[#ff6352ea] z-50 w-full h-fit flex flex-col gap-4 py-12 px-8 mx-auto max-mobile:items-center max-mobile:gap-8 ${
+        className={`mobile:hidden fixed  bg-[#ff6352ea] z-50 w-full h-fit flex flex-col gap-4 py-24 px-8 mx-auto max-mobile:items-center max-mobile:gap-8 ${
           hamClick ? '' : 'hidden'
         }`}
       >
@@ -54,6 +71,7 @@ const Nav = () => {
               className="cursor-pointer w-fit px-2  hover:text-slate-600 max-mobile:text-xl max-mobile:font-semibold max-mobile:text-white"
               onClick={() => {
                 setHamClick((res) => !res);
+                scrolltodiv({ id: res.id, subsTop: 62 });
               }}
             >
               <a href={res.href}>{res.label}</a>
